@@ -2,8 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import "./Map.css";
 import MapContext from "../state-management/MapContext";
 import * as ol from "ol";
+import DrawInteractions from './DrawInteractions';
 
-const Map = ({ children, zoom, center }) => {
+const Map = ({ children, zoom, center,setDrawnFeatureCoordinates,drawnFeatureCoordinates }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
   // on component mount
@@ -29,9 +30,13 @@ const Map = ({ children, zoom, center }) => {
     if (!map) return;
     map.getView().setCenter(center);
   }, [center]);
+
+
+
   return (
     <MapContext.Provider value={{ map }}>
       <div ref={mapRef} className="ol-map">
+      
         {children}
       </div>
     </MapContext.Provider>
