@@ -6,7 +6,7 @@ import Point from "ol/geom/Point";
 import { osm, vector, xyz } from "../../Source";
 import { fromLonLat, get } from "ol/proj";
 import GeoJSON from "ol/format/GeoJSON";
-import { Controls, FullScreenControl } from "../../controls";
+import { Controls, FullScreenControl ,ZoomControl} from "../../controls";
 import FeatureStyles from "../../feactures/Styles";
 import { fetchHomeGeoData } from "../../service/home/HomeService";
 import mapConfig from "../../config.json";
@@ -23,7 +23,7 @@ const geojsonObject2 = mapConfig.geojsonObject2;
 const markersLonLat = [mapConfig.kansasCityLonLat, mapConfig.blueSpringsLonLat];
 
 const Home = () => {
-  const [center, setCenter] = useState(mapConfig.center);
+  const [center, setCenter] = useState(fromLonLat([0, 0]));
   const [zoom, setZoom] = useState(1);
   const [drawType, setDrawType] = useState("Point");
   const [drawInteraction, setDrawInteraction] = useState(null);
@@ -127,7 +127,7 @@ const Home = () => {
         setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
       >
         <Layers>
-          <TileLayer source={mapSource} zIndex={0} />
+          <TileLayer  source={mapSource} zIndex={0} />
 
           {/* {showLayer2 && (
             <VectorLayer
@@ -141,6 +141,7 @@ const Home = () => {
           )} */}
           <DrawInteractions
             onDrawEnd={handleDrawEnd}
+           
             source={vector({
               features: new GeoJSON().readFeatures(sampleFeatures, {
                 featureProjection: get("EPSG:3857"),
@@ -155,6 +156,7 @@ const Home = () => {
         </Layers>
         <Controls>
           <FullScreenControl />
+          <ZoomControl />
         </Controls>
       </Map>
     </div>

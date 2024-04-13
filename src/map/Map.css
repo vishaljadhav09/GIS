@@ -13,5 +13,35 @@
 }
 .ol-full-screen {
   top: 0.5em;
-  right: 0.5em;
+  right: 0.7em;
+
+}
+.ol-full-screen-true {
+  display: block;
+  font-size: 20px; /* Adjust button size */
+  width: 30px; /* Adjust button width */
+  height: 30px; /* Adjust button height */
+}
+
+.ol-full-screen-false {
+  display: block;
+  font-size: 20px; /* Adjust button size */
+  width: 30px; /* Adjust button width */
+  height: 30px; /* Adjust button height */
+}
+.ol-zoom {
+  display: block;
+ top:40px;
+ right:10px
+  
+}
+.ol-zoom-in{
+  width: 30px; /* Adjust button width */
+  height: 30px; 
+}
+.ol-zoom-out {
+    display: block;
+    width: 30px; /* Adjust button width */
+    height: 30px; 
+ 
 }

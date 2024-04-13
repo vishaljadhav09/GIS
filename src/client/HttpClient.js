@@ -37,25 +37,20 @@ export const getServerBasePath = () =>{
   export const postRequest = (url,drawnFeaturesState,params) =>{
     const drawnFeatures = drawnFeaturesState;
   
-    // Prepare an array to store XML nodes for each feature
     const featureNodes = [];
   
-    // Iterate over each drawn feature
     drawnFeatures.forEach(drawnFeature => {
-      // parse feature properties
       const featureData = JSON.parse(drawnFeature.getProperties()['data']);
   
-      // iterate prop to test write-back
       if (featureData.iteration) {
         ++featureData.iteration;
       } else {
         featureData.iteration = 1;
       }
   
-      // set property data back to feature
       drawnFeature.setProperties({ data: JSON.stringify(featureData) });
   
-      // prepare feature for WFS update transaction
+      //feature for WFS update transaction
       const wfsFormatter = new WFS();
       const gmlFormatter = new GML({
         featureNS:url,
