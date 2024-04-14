@@ -45,3 +45,13 @@
     height: 30px; 
  
 }
+
+.rotate-north {
+  top: 10px;
+  left: .5em;
+}
+
+.my-location-icon{
+    width: 20px;
+    height: 20px; 
+}

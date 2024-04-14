@@ -17,6 +17,7 @@ import { XYZ } from "ol/source";
 import MapContext from "../../state-management/MapContext";
 import DrawInteractions from "../../map/DrawInteractions";
 import { submitGeoData } from "../../service/home/HomeService";
+import LocationControl from "../../controls/LocationControl";
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
@@ -108,7 +109,6 @@ const Home = () => {
   };
   return (
     <div>
-      {console.log(drawnFeatureCoordinates, "drawnFeatureCoordinates")}
       <div>
         <label>
           Draw Type:
@@ -157,6 +157,7 @@ const Home = () => {
         <Controls>
           <FullScreenControl />
           <ZoomControl />
+          <LocationControl />
         </Controls>
       </Map>
     </div>

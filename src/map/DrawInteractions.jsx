@@ -14,7 +14,6 @@ const DrawInteractions = ({ source, style, zIndex = 0,drawnFeatureCoordinates,dr
   const [vectorLayer, setVectorLayer] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
 
-  console.log(drawType,'drawType')
 
     useEffect(() => {
       if (!map) return; //
