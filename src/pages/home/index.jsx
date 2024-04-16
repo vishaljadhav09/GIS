@@ -1,23 +1,25 @@
-import React, { useEffect, useState, useContext } from "react";
-import Map from "../../map";
-import { Layers, TileLayer, VectorLayer } from "../../layers";
 import Feature from "ol/Feature";
-import Point from "ol/geom/Point";
-import { osm, vector, xyz } from "../../Source";
-import { fromLonLat, get } from "ol/proj";
 import GeoJSON from "ol/format/GeoJSON";
-import { Controls, FullScreenControl ,ZoomControl} from "../../controls";
-import FeatureStyles from "../../feactures/Styles";
-import { fetchHomeGeoData } from "../../service/home/HomeService";
-import mapConfig from "../../config.json";
+import Point from "ol/geom/Point";
+import { fromLonLat, get } from "ol/proj";
+import { Icon, Style } from "ol/style";
+import React, { useEffect, useState } from "react";
 import "../../App.css";
-import { Circle as CircleStyle, Fill, Stroke, Style, Icon } from "ol/style";
-import { styleFunction } from "../../utils/functions/StyleFunction";
-import { XYZ } from "ol/source";
-import MapContext from "../../state-management/MapContext";
-import DrawInteractions from "../../map/DrawInteractions";
-import { submitGeoData } from "../../service/home/HomeService";
+import { osm, vector } from "../../Source";
+import mapConfig from "../../config.json";
+import { Controls, FullScreenControl, ZoomControl } from "../../controls";
 import LocationControl from "../../controls/LocationControl";
+import { Layers, TileLayer, VectorLayer } from "../../layers";
+import Map from "../../map";
+import DrawInteractions from "../../map/DrawInteractions";
+import {
+  fetchHomeGeoData,
+  submitGeoData,
+} from "../../service/home/HomeService";
+import { styleFunction } from "../../utils/functions/StyleFunction";
+import { Box, Button, Divider, Drawer, IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
@@ -29,6 +31,7 @@ const Home = () => {
   const [drawType, setDrawType] = useState("Point");
   const [drawInteraction, setDrawInteraction] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const [showLayer1, setShowLayer1] = useState(true);
   const [showLayer2, setShowLayer2] = useState(true);
@@ -88,10 +91,10 @@ const Home = () => {
   const handleDrawEnd = (drawnFeature) => {
     // Update the state with the coordinates of the drawn feature
 
-    if(drawnFeature.type === drawType){
-      console.log(drawnFeature,drawType,'drawnFeature')
+    if (drawnFeature.type === drawType) {
+      console.log(drawnFeature, drawType, "drawnFeature");
 
-    drawnFeatureCoordinates.push(drawnFeature);
+      drawnFeatureCoordinates.push(drawnFeature);
     }
   };
   const handleChangeDrawType = (event) => {
@@ -107,10 +110,29 @@ const Home = () => {
       console.log(error);
     }
   };
-  return (
-    <div>
-      <div>
-        <label>
+
+  const handleDrawerClick = () => {
+    setOpenDrawer(true);
+  };
+
+  const drawerMenu = (
+    <Box
+      sx={{ width: 350 }}
+      role="presentation"
+      //onClick={() => setOpenDrawer(false)}
+    >
+      <Box sx={{display:'flex',justifyContent:'end'}}>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={()=>setOpenDrawer(false)}
+        >
+          <KeyboardDoubleArrowLeftIcon />
+        </IconButton>
+      </Box>
+      <Divider />
+      <Box sx={{my:1}}>
+        <label style={{marginRight:2}}>
           Draw Type:
           <select value={drawType} onChange={handleChangeDrawType}>
             <option value="Point">Point</option>
@@ -118,7 +140,26 @@ const Home = () => {
             <option value="Polygon">Polygon</option>
           </select>
         </label>
-        <button onClick={handleSubmitAction}>Submit</button>
+      </Box>
+      <button onClick={handleSubmitAction}>Submit</button>
+
+    </Box>
+  );
+
+  return (
+    <div>
+      
+      <div>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerClick}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
+          {drawerMenu}
+        </Drawer>
       </div>
       <Map
         center={fromLonLat(center)}
@@ -127,7 +168,7 @@ const Home = () => {
         setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
       >
         <Layers>
-          <TileLayer  source={mapSource} zIndex={0} />
+          <TileLayer source={mapSource} zIndex={0} />
 
           {/* {showLayer2 && (
             <VectorLayer
@@ -141,7 +182,6 @@ const Home = () => {
           )} */}
           <DrawInteractions
             onDrawEnd={handleDrawEnd}
-           
             source={vector({
               features: new GeoJSON().readFeatures(sampleFeatures, {
                 featureProjection: get("EPSG:3857"),

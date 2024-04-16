@@ -4,7 +4,9 @@ import MapContext from "../state-management/MapContext";
 import { fromLonLat, transform } from "ol/proj";
 import Geolocation from "ol/Geolocation.js";
 import MyLocation from '.././utils/images/my-location.png';
-
+import { Feature } from "ol";
+import { Point } from "ol/geom";
+import { Style, Icon } from 'ol/style';
 const LocationControl = ({ lable }) => {
   const { map } = useContext(MapContext);
 
@@ -17,6 +19,9 @@ const LocationControl = ({ lable }) => {
     img.className = 'my-location-icon'
     button.appendChild(img);
 
+    const vectorLayer = map.getLayers().item(1); // Assuming the vector layer is the second layer
+    const vectorSource = vectorLayer.getSource();
+
     var handleLocationClick = function (e) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -25,7 +30,8 @@ const LocationControl = ({ lable }) => {
             'EPSG:4326',
             'EPSG:3857'
         );
-        map.getView().animate({ center: coordinates, zoom: 10 });
+        addMarker(coordinates);
+        map.getView().animate({ center: coordinates, zoom: 20 });
     },
     (error) => console.error('Error getting geolocation:', error),
     {
@@ -36,6 +42,21 @@ const LocationControl = ({ lable }) => {
   );
     
     };
+
+    const addMarker = (coordinates) => {
+      vectorSource.clear(); // Clear existing markers
+      const marker = new Feature({
+          geometry: new Point(coordinates),
+          style: new Style({
+            image: new Icon({
+              anchor: [0.5, 1],
+              src: 'https://cdn2.iconfinder.com/data/icons/social-media-and-payment/64/-47-32.png'
+            })
+          })
+      });
+
+      vectorSource.addFeature(marker);
+  };
 
     button.addEventListener("click", handleLocationClick, false);
 
