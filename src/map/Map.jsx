@@ -40,12 +40,17 @@ const Map = ({
 
   return (
     <MapContext.Provider value={{ map }}>
-      <Box >
-      <div ref={mapRef} className="ol-map">
-        <div>{children}</div>
-      </div>
+      <Box>
+        <div ref={mapRef} className="ol-map">
+          <div>{children}</div>
+        </div>
       </Box>
-
+      <div class="overlay-container" >
+        <span class="overlay-text" id="feacture-name"></span>
+        <br />
+        <span class="overlay-text" id="feacture-Additional-info"></span>
+        <br />
+      </div>
     </MapContext.Provider>
   );
 };

@@ -68,3 +68,28 @@ display: block;
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+.overlay-container{
+background-color: cornsilk;
+width: 150px;
+color: black;
+text-align: center;
+border-radius: 10px;
+padding: 2px 0;
+position:absolute;
+z-index: 1;
+bottom: 100%;
+left: 50%;
+margin-left: -80px;
+}
+
+.overlay-container #feacture-Additional-info::after{
+  content: '';
+  position: absolute;
+  top: 100%;
+  left:50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: cornsilk transparent transparent transparent;
+}
