@@ -7,6 +7,10 @@ import MyLocation from '.././utils/images/my-location.png';
 import { Feature } from "ol";
 import { Point } from "ol/geom";
 import { Style, Icon } from 'ol/style';
+import { Vector } from "ol/layer";
+import VectorSource from "ol/source/Vector";
+import markerImage from '../utils/images/m.png';
+
 const LocationControl = ({ lable }) => {
   const { map } = useContext(MapContext);
 
@@ -43,19 +47,29 @@ const LocationControl = ({ lable }) => {
     
     };
 
+
     const addMarker = (coordinates) => {
-      vectorSource.clear(); // Clear existing markers
+      
+      //vectorSource.clear(); // Clear existing markers
       const marker = new Feature({
           geometry: new Point(coordinates),
-          style: new Style({
-            image: new Icon({
-              anchor: [0.5, 1],
-              src: 'https://cdn2.iconfinder.com/data/icons/social-media-and-payment/64/-47-32.png'
-            })
-          })
+          
       });
 
-      vectorSource.addFeature(marker);
+      const pinLayer = new Vector ({
+        source: new VectorSource({
+          features: [marker]
+        }),
+        style: new Style({
+          image: new Icon({
+            anchor: [0.5, 1],
+            src: 'https://cdn2.iconfinder.com/data/icons/social-media-and-payment/64/-47-32.png'
+          })
+        })
+      });
+      map.addLayer (pinLayer);
+
+      //vectorSource.addFeatures(marker);
   };
 
     button.addEventListener("click", handleLocationClick, false);

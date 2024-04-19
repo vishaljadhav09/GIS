@@ -40,8 +40,8 @@ const DrawInteractions = ({ source, style, zIndex = 0,drawnFeatureCoordinates,dr
     });
     const snap = new Snap({ source: source });
 
-    //map.addInteraction(draw);
-    map.addInteraction(modify);
+    map.addInteraction(draw);
+    //map.addInteraction(modify);
     //map.addInteraction(snap);
 
     setDrawInteraction(modify);

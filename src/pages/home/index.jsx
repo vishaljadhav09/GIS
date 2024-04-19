@@ -17,9 +17,18 @@ import {
   submitGeoData,
 } from "../../service/home/HomeService";
 import { styleFunction } from "../../utils/functions/StyleFunction";
-import { Box, Button, Divider, Drawer, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Divider,
+  Drawer,
+  Grid,
+  IconButton,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import BaseLayer from "../../layers/BaseLayer";
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
@@ -116,23 +125,19 @@ const Home = () => {
   };
 
   const drawerMenu = (
-    <Box
-      sx={{ width: 350 }}
-      role="presentation"
-      //onClick={() => setOpenDrawer(false)}
-    >
-      <Box sx={{display:'flex',justifyContent:'end'}}>
+    <Box>
+      <Box sx={{ display: "flex", justifyContent: "start" }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={()=>setOpenDrawer(false)}
+          onClick={() => setOpenDrawer(false)}
         >
           <KeyboardDoubleArrowLeftIcon />
         </IconButton>
       </Box>
       <Divider />
-      <Box sx={{my:1}}>
-        <label style={{marginRight:2}}>
+      <Box sx={{ my: 1 }}>
+        <label style={{ marginRight: 0 }}>
           Draw Type:
           <select value={drawType} onChange={handleChangeDrawType}>
             <option value="Point">Point</option>
@@ -141,36 +146,36 @@ const Home = () => {
           </select>
         </label>
       </Box>
-      <button onClick={handleSubmitAction}>Submit</button>
-
+      {/* <button onClick={handleSubmitAction}>Submit</button> */}
+      <ButtonGroup sx={{ m: 0 }}>
+        <Button
+          className="drawer-menu-bt1"
+          sx={{ p: 3 }}
+          onClick={() => setDrawType("LineString")}
+        ></Button>
+        <Button
+          className="drawer-menu-bt2"
+          sx={{ p: 3 }}
+          onClick={() => setDrawType("Polygon")}
+        ></Button>
+      </ButtonGroup>
     </Box>
   );
 
   return (
-    <div>
-      
-      <div>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerClick}
+    <Grid container spacing={2}>
+      <Grid item xs={10}>
+        <Map
+          center={fromLonLat(center)}
+          zoom={zoom}
+          drawnFeatureCoordinates={drawnFeatureCoordinates}
+          setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
         >
-          <MenuIcon />
-        </IconButton>
-        <Drawer open={openDrawer} onClose={() => setOpenDrawer(false)}>
-          {drawerMenu}
-        </Drawer>
-      </div>
-      <Map
-        center={fromLonLat(center)}
-        zoom={zoom}
-        drawnFeatureCoordinates={drawnFeatureCoordinates}
-        setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
-      >
-        <Layers>
-          <TileLayer source={mapSource} zIndex={0} />
+          <Layers>
+            <BaseLayer zIndex={10} />
+            {/* <TileLayer source={mapSource} zIndex={0} /> */}
 
-          {/* {showLayer2 && (
+            {showLayer2 && (
             <VectorLayer
               source={vector({
                 features: new GeoJSON().readFeatures(sampleFeatures, {
@@ -179,28 +184,89 @@ const Home = () => {
               })}
               style={styleFunction}
             />
-          )} */}
-          <DrawInteractions
-            onDrawEnd={handleDrawEnd}
-            source={vector({
-              features: new GeoJSON().readFeatures(sampleFeatures, {
-                featureProjection: get("EPSG:3857"),
-              }),
-            })}
-            style={styleFunction}
-            drawType={drawType}
-            drawnFeatureCoordinates={drawnFeatureCoordinates}
-            setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
-          />
-          {showMarker && <VectorLayer source={vector({ features })} />}
-        </Layers>
-        <Controls>
-          <FullScreenControl />
-          <ZoomControl />
-          <LocationControl />
-        </Controls>
-      </Map>
-    </div>
+          )}
+            {/* <DrawInteractions
+              onDrawEnd={handleDrawEnd}
+              source={vector({
+                features: new GeoJSON().readFeatures(sampleFeatures, {
+                  featureProjection: get("EPSG:3857"),
+                }),
+              })}
+              style={styleFunction}
+              drawType={drawType}
+              drawnFeatureCoordinates={drawnFeatureCoordinates}
+              setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
+            /> */}
+            {/* {showMarker && <VectorLayer source={vector({ features })} />} */}
+          </Layers>
+          <Controls>
+            <FullScreenControl />
+            <ZoomControl />
+            <LocationControl />
+          </Controls>
+        </Map>
+      </Grid>
+
+      <Grid item xs={2} p={0} sx={{ backgroundColor: "white" }}>
+        {/* <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerClick}
+          //sx={{right:0,top:200,color:'white'}}
+        >
+          <MenuIcon />
+        </IconButton> */}
+        {/* <Drawer
+          open={openDrawer}
+          onClose={() => setOpenDrawer(false)}
+          sx={{
+            width: 'auto',
+            "& .MuiDrawer-paper": {
+              width: 'auto',
+              
+            },
+          }}
+          variant="permanent"
+          anchor="right"
+        > */}
+        <Box sx={{paddingLeft:0}}>
+          <Box sx={{ display: "flex", justifyContent: "start" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpenDrawer(false)}
+            >
+              <KeyboardDoubleArrowLeftIcon />
+            </IconButton>
+          </Box>
+          <Divider />
+          <Box sx={{ my: 1 }}>
+            <label style={{ marginRight: 0 }}>
+              Draw Type:
+              <select value={drawType} onChange={handleChangeDrawType}>
+                <option value="Point">Point</option>
+                <option value="LineString">Line</option>
+                <option value="Polygon">Polygon</option>
+              </select>
+            </label>
+          </Box>
+          {/* <button onClick={handleSubmitAction}>Submit</button> */}
+          <ButtonGroup sx={{ m: 0 }}>
+            <Button
+              className="drawer-menu-bt1"
+              sx={{ p: 3 }}
+              onClick={() => setDrawType("LineString")}
+            ></Button>
+            <Button
+              className="drawer-menu-bt2"
+              sx={{ p: 3 }}
+              onClick={() => setDrawType("Polygon")}
+            ></Button>
+          </ButtonGroup>
+        </Box>
+        {/* </Drawer> */}
+      </Grid>
+    </Grid>
   );
 };
 
