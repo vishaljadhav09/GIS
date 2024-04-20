@@ -17,7 +17,7 @@ const Map = ({
   // on component mount
   useEffect(() => {
     let options = {
-      view: new ol.View({ zoom, center }),
+      view: new ol.View({ zoom, center,constrainOnlyCenter: true, }),
       layers: [],
       controls: [],
       overlays: [],

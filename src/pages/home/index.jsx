@@ -42,11 +42,14 @@ const Home = () => {
   const [coordinates, setCoordinates] = useState([]);
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const [showLayer1, setShowLayer1] = useState(true);
+  const [showLayer1, setShowLayer1] = useState(false);
   const [showLayer2, setShowLayer2] = useState(true);
   const [showMarker, setShowMarker] = useState(true);
 
-  const [features, setFeatures] = useState(addMarkers([]));
+  const [features, setFeatures] = useState({
+    type: "FeatureCollection",
+    features: [],
+  });
   const [sampleFeatures, setSampleFeatures] = useState({
     type: "FeatureCollection",
     features: [],
@@ -85,8 +88,13 @@ const Home = () => {
         //	PostgressSQL:geosolutions_giant_polygon
         //PostgressSQL:gs_us_states
         //PostgressSQL:nyc_neighborhoods
-        const response = await fetchHomeGeoData("PostgressSQL:gs_us_states");
+        const response = await fetchHomeGeoData("sf:archsites");
+        const response2 = await fetchHomeGeoData("PostgressSQL:gs_us_states");
+
         setSampleFeatures(response.data);
+        setFeatures(response2.data);
+        setCenter([-11551420.707639957,5531805.937076705])
+        //setZoom(9)
         // setFeatures(addMarkers([...extractPointCoordinates(response.data.features),...markersLonLat]))
         // {console.log([...extractPointCoordinates(response.data.features),...markersLonLat])}
       } catch (error) {
@@ -163,10 +171,10 @@ const Home = () => {
   );
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{p:2}}>
       <Grid item xs={10}>
         <Map
-          center={fromLonLat(center)}
+          center={center}
           zoom={zoom}
           drawnFeatureCoordinates={drawnFeatureCoordinates}
           setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
@@ -179,6 +187,17 @@ const Home = () => {
             <VectorLayer
               source={vector({
                 features: new GeoJSON().readFeatures(sampleFeatures, {
+                  featureProjection: get("EPSG:3857"),
+                }),
+              })}
+              style={styleFunction}
+              zIndex={1}
+            />
+          )}
+           {showLayer1 && (
+            <VectorLayer
+              source={vector({
+                features: new GeoJSON().readFeatures(features, {
                   featureProjection: get("EPSG:3857"),
                 }),
               })}

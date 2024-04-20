@@ -3,7 +3,7 @@ import MapContext from "../state-management/MapContext";
 import OLVectorLayer from "ol/layer/Vector";
 import { Overlay } from "ol";
 
-const VectorLayer = ({ source, style, zIndex = 0 }) => {
+const VectorLayer = ({ source, style, zIndex }) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
@@ -30,8 +30,8 @@ const VectorLayer = ({ source, style, zIndex = 0 }) => {
 		overlay.setPosition(undefined);
         map.forEachFeatureAtPixel(e.pixel, function (feacture, layer) {
 			let coordinates = e.coordinate;
-          let clickedFeactureName = feacture.get("STATE_NAME");
-          let clickedFeactureAdditionalInfo = feacture.get("SUB_REGION");
+          let clickedFeactureName = feacture.get("str1");
+          let clickedFeactureAdditionalInfo = feacture.get("cat");
 		  overlay.setPosition(coordinates);
 		  if(overlayFeactureName && overlayFeactureAdditionalInfo){
 			overlayFeactureName.innerText = clickedFeactureName;
@@ -44,11 +44,11 @@ const VectorLayer = ({ source, style, zIndex = 0 }) => {
     }
     return () => {
       if (map) {
-        //map.removeLayer(vectorLayer);
-		//map.removeOverlay(overlay);
+    //     map.removeLayer(vectorLayer);
+		// map.removeOverlay(overlay);
       }
     };
-  }, [source,map]);
+  }, [source,map,zIndex]);
 
   return (
 	null

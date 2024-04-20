@@ -5,13 +5,12 @@ export const styleFunction = (feature) => {
     let style;
 
     if (geometryType === 'Point') {
-      style = new Style({
-        image: new CircleStyle({
-          radius: 6,
-          fill: new Fill({ color: 'blue' }),
-          stroke: new Stroke({ color: 'white', width: 2 }),
-        }),
-      });
+      style =new Style({
+        image: new Icon({
+          anchor: [0.5, 1],
+          src: 'https://cdn2.iconfinder.com/data/icons/social-media-and-payment/64/-47-32.png'
+        })
+      })
     } else if (geometryType === 'Polygon') {
       style = new Style({
         fill: new Fill({ color: 'rgba(255, 255, 0, 0.2)' }),
