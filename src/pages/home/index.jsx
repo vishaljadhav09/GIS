@@ -32,12 +32,14 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import BaseLayer from "../../layers/BaseLayer";
 import { Vector } from "ol/source";
 import { KML } from "ol/format";
+import ProjectCard from "../../components/ProjectCard";
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
 const markersLonLat = [mapConfig.kansasCityLonLat, mapConfig.blueSpringsLonLat];
 
 const Home = () => {
+  
   const [center, setCenter] = useState(fromLonLat([0, 0]));
   const [zoom, setZoom] = useState(1);
   const [drawType, setDrawType] = useState("Point");
@@ -108,6 +110,8 @@ const Home = () => {
 
     fetchData();
   }, []);
+
+
   const handleDrawEnd = (drawnFeature) => {
     // Update the state with the coordinates of the drawn feature
 
@@ -134,9 +138,16 @@ const Home = () => {
     setOpenDrawer(true);
   };
 
+  const handleProjectCardClick = (feacture) => {
+    console.log(feacture.geometry.coordinates);
+
+    setCenter(fromLonLat(feacture.geometry.coordinates));
+    setZoom(15);
+  };
+
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
-      <Grid item xs={10}>
+      <Grid item xs={9}>
         <Map
           center={center}
           zoom={zoom}
@@ -168,7 +179,7 @@ const Home = () => {
               />
             )}
             {/* //For kmz file */}
-            <VectorLayer
+            {/* <VectorLayer
               source={
                 new Vector({
                   url: "https://openlayers.org/en/latest/examples/data/kml/2012-02-10.kml",
@@ -176,7 +187,7 @@ const Home = () => {
                 })
               }
               style={styleFunction}
-            />
+            /> */}
             {/* <DrawInteractions
               onDrawEnd={handleDrawEnd}
               source={vector({
@@ -199,8 +210,7 @@ const Home = () => {
         </Map>
       </Grid>
 
-      <Grid item xs={2} p={0} sx={{ backgroundColor: "white" }}>
-
+      <Grid item xs={3} p={0} sx={{ backgroundColor: "white" }}>
         <Box sx={{ paddingLeft: 0 }}>
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <IconButton
@@ -212,11 +222,30 @@ const Home = () => {
             </IconButton>
           </Box>
           <Divider />
-          <Box sx={{display:'flex' ,flexDirection:'row',alignItems:'center' ,alignContent:'space-between'}}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              alignContent: "space-between",
+            }}
+          >
             <Typography>Edit : </Typography>
-            <ButtonGroup sx={{ml:1}}>
-              <Button sx={{p:0}} onClick={()=>setIsDrawEnable(true)} variant={isDrawEnable ? 'contained' : 'outlined'}>Yes</Button>
-              <Button sx={{p:0}} onClick={()=>setIsDrawEnable(false)} variant={isDrawEnable ? 'outlined' : 'contained'}>No</Button>
+            <ButtonGroup sx={{ ml: 1 }}>
+              <Button
+                sx={{ p: 0 }}
+                onClick={() => setIsDrawEnable(true)}
+                variant={isDrawEnable ? "contained" : "outlined"}
+              >
+                Yes
+              </Button>
+              <Button
+                sx={{ p: 0 }}
+                onClick={() => setIsDrawEnable(false)}
+                variant={isDrawEnable ? "outlined" : "contained"}
+              >
+                No
+              </Button>
             </ButtonGroup>
           </Box>
           <Box sx={{ my: 1 }}>
@@ -234,18 +263,41 @@ const Home = () => {
             <Button
               className="drawer-menu-bt1"
               sx={{ p: 2 }}
-              variant={drawType === 'LineString' ? 'contained' : 'outlined' }
+              variant={drawType === "LineString" ? "contained" : "outlined"}
               onClick={() => setDrawType("LineString")}
             ></Button>
             <Button
               className="drawer-menu-bt2"
-              variant={drawType === 'Polygon' ? 'contained' : 'outlined' }
+              variant={drawType === "Polygon" ? "contained" : "outlined"}
               sx={{ p: 2 }}
               onClick={() => setDrawType("Polygon")}
             ></Button>
           </ButtonGroup>
         </Box>
-        {/* </Drawer> */}
+        <Divider />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            maxHeight: 400,
+            overflow: "auto",
+          }}
+        >
+          {sampleFeatures.features.map((feacture, index) => {
+            return (
+              <Box
+                key={index}
+                sx={{ py: 1 }}
+                onClick={() => handleProjectCardClick(feacture)}
+              >
+                <ProjectCard
+                  header={feacture.properties.str1}
+                  body={feacture.properties.cat}
+                />
+              </Box>
+            );
+          })}
+        </Box>
       </Grid>
     </Grid>
   );

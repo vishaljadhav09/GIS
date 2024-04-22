@@ -46,7 +46,6 @@ const VectorLayer = ({ source, style, zIndex }) => {
 
     vectorLayer.once('change', function () {
       vectorLayer.getSource().forEachFeature(function (feature) {
-          console.log(feature);
       });
   });
 

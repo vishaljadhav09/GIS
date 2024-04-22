@@ -35,15 +35,61 @@ const Map = ({
   // zoom change handler
   useEffect(() => {
     if (!map) return;
-    map.getView().setZoom(zoom);
+    var view = map.getView();
+    view.animate({
+      zoom: zoom,
+      duration: 3000,
+    });
+    //map.getView().setZoom(zoom);
   }, [zoom]);
   // center change handler
   useEffect(() => {
     if (!map) return;
-    map.getView().setCenter(center);
-  }, [center,zoom]);
+// var view = map.getView();
+//     view.animate({
+//       center: center,
+//       duration: 3000,
+//     });
+flyTo(center, function () {});
+    //map.getView().setCenter(center);
+  }, [center]);
 
 
+  function flyTo(location, done) {
+    var view = map.getView();
+    const duration = 2000;
+    const zoom = view.getZoom();
+    let parts = 2;
+    let called = false;
+    function callback(complete) {
+      --parts;
+      if (called) {
+        return;
+      }
+      if (parts === 0 || !complete) {
+        called = true;
+        done(complete);
+      }
+    }
+    view.animate(
+      {
+        center: location,
+        duration: duration,
+      },
+      callback,
+    );
+    view.animate(
+      {
+        zoom: zoom - 1,
+        duration: duration / 2,
+      },
+      {
+        zoom: zoom,
+        duration: duration / 2,
+      },
+      callback,
+    );
+  }
 
   return (
     <MapContext.Provider value={{ map }}>
