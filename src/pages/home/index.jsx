@@ -25,10 +25,13 @@ import {
   Drawer,
   Grid,
   IconButton,
+  Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import BaseLayer from "../../layers/BaseLayer";
+import { Vector } from "ol/source";
+import { KML } from "ol/format";
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
@@ -39,7 +42,7 @@ const Home = () => {
   const [zoom, setZoom] = useState(1);
   const [drawType, setDrawType] = useState("Point");
   const [drawInteraction, setDrawInteraction] = useState(null);
-  const [coordinates, setCoordinates] = useState([]);
+  const [isDrawEnable, setIsDrawEnable] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [showLayer1, setShowLayer1] = useState(false);
@@ -93,7 +96,7 @@ const Home = () => {
 
         setSampleFeatures(response.data);
         setFeatures(response2.data);
-        setCenter([-11551420.707639957,5531805.937076705])
+        setCenter([-11551420.707639957, 5531805.937076705]);
         //setZoom(9)
         // setFeatures(addMarkers([...extractPointCoordinates(response.data.features),...markersLonLat]))
         // {console.log([...extractPointCoordinates(response.data.features),...markersLonLat])}
@@ -116,7 +119,6 @@ const Home = () => {
   };
   const handleChangeDrawType = (event) => {
     setDrawType(event.target.value);
-    //setCoordinates([]); // Clear coordinates when draw type changes
   };
 
   const handleSubmitAction = async () => {
@@ -132,46 +134,8 @@ const Home = () => {
     setOpenDrawer(true);
   };
 
-  const drawerMenu = (
-    <Box>
-      <Box sx={{ display: "flex", justifyContent: "start" }}>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={() => setOpenDrawer(false)}
-        >
-          <KeyboardDoubleArrowLeftIcon />
-        </IconButton>
-      </Box>
-      <Divider />
-      <Box sx={{ my: 1 }}>
-        <label style={{ marginRight: 0 }}>
-          Draw Type:
-          <select value={drawType} onChange={handleChangeDrawType}>
-            <option value="Point">Point</option>
-            <option value="LineString">Line</option>
-            <option value="Polygon">Polygon</option>
-          </select>
-        </label>
-      </Box>
-      {/* <button onClick={handleSubmitAction}>Submit</button> */}
-      <ButtonGroup sx={{ m: 0 }}>
-        <Button
-          className="drawer-menu-bt1"
-          sx={{ p: 3 }}
-          onClick={() => setDrawType("LineString")}
-        ></Button>
-        <Button
-          className="drawer-menu-bt2"
-          sx={{ p: 3 }}
-          onClick={() => setDrawType("Polygon")}
-        ></Button>
-      </ButtonGroup>
-    </Box>
-  );
-
   return (
-    <Grid container spacing={2} sx={{p:2}}>
+    <Grid container spacing={2} sx={{ p: 2 }}>
       <Grid item xs={10}>
         <Map
           center={center}
@@ -181,29 +145,38 @@ const Home = () => {
         >
           <Layers>
             <BaseLayer zIndex={10} />
-            {/* <TileLayer source={mapSource} zIndex={0} /> */}
 
             {showLayer2 && (
+              <VectorLayer
+                source={vector({
+                  features: new GeoJSON().readFeatures(sampleFeatures, {
+                    featureProjection: get("EPSG:3857"),
+                  }),
+                })}
+                style={styleFunction}
+                zIndex={1}
+              />
+            )}
+            {showLayer1 && (
+              <VectorLayer
+                source={vector({
+                  features: new GeoJSON().readFeatures(features, {
+                    featureProjection: get("EPSG:3857"),
+                  }),
+                })}
+                style={styleFunction}
+              />
+            )}
+            {/* //For kmz file */}
             <VectorLayer
-              source={vector({
-                features: new GeoJSON().readFeatures(sampleFeatures, {
-                  featureProjection: get("EPSG:3857"),
-                }),
-              })}
-              style={styleFunction}
-              zIndex={1}
-            />
-          )}
-           {showLayer1 && (
-            <VectorLayer
-              source={vector({
-                features: new GeoJSON().readFeatures(features, {
-                  featureProjection: get("EPSG:3857"),
-                }),
-              })}
+              source={
+                new Vector({
+                  url: "https://openlayers.org/en/latest/examples/data/kml/2012-02-10.kml",
+                  format: new KML(),
+                })
+              }
               style={styleFunction}
             />
-          )}
             {/* <DrawInteractions
               onDrawEnd={handleDrawEnd}
               source={vector({
@@ -227,28 +200,8 @@ const Home = () => {
       </Grid>
 
       <Grid item xs={2} p={0} sx={{ backgroundColor: "white" }}>
-        {/* <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerClick}
-          //sx={{right:0,top:200,color:'white'}}
-        >
-          <MenuIcon />
-        </IconButton> */}
-        {/* <Drawer
-          open={openDrawer}
-          onClose={() => setOpenDrawer(false)}
-          sx={{
-            width: 'auto',
-            "& .MuiDrawer-paper": {
-              width: 'auto',
-              
-            },
-          }}
-          variant="permanent"
-          anchor="right"
-        > */}
-        <Box sx={{paddingLeft:0}}>
+
+        <Box sx={{ paddingLeft: 0 }}>
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <IconButton
               color="inherit"
@@ -259,6 +212,13 @@ const Home = () => {
             </IconButton>
           </Box>
           <Divider />
+          <Box sx={{display:'flex' ,flexDirection:'row',alignItems:'center' ,alignContent:'space-between'}}>
+            <Typography>Edit : </Typography>
+            <ButtonGroup sx={{ml:1}}>
+              <Button sx={{p:0}} onClick={()=>setIsDrawEnable(true)} variant={isDrawEnable ? 'contained' : 'outlined'}>Yes</Button>
+              <Button sx={{p:0}} onClick={()=>setIsDrawEnable(false)} variant={isDrawEnable ? 'outlined' : 'contained'}>No</Button>
+            </ButtonGroup>
+          </Box>
           <Box sx={{ my: 1 }}>
             <label style={{ marginRight: 0 }}>
               Draw Type:
@@ -273,12 +233,14 @@ const Home = () => {
           <ButtonGroup sx={{ m: 0 }}>
             <Button
               className="drawer-menu-bt1"
-              sx={{ p: 3 }}
+              sx={{ p: 2 }}
+              variant={drawType === 'LineString' ? 'contained' : 'outlined' }
               onClick={() => setDrawType("LineString")}
             ></Button>
             <Button
               className="drawer-menu-bt2"
-              sx={{ p: 3 }}
+              variant={drawType === 'Polygon' ? 'contained' : 'outlined' }
+              sx={{ p: 2 }}
               onClick={() => setDrawType("Polygon")}
             ></Button>
           </ButtonGroup>

@@ -23,6 +23,7 @@ const BaseLayer = ({ zIndex }) => {
       type: "base",
       visible: true,
       maxZoom:28,
+      updateWhileAnimating:true,
       source: new OSM(),
     });
 
@@ -37,6 +38,7 @@ const BaseLayer = ({ zIndex }) => {
         ],
         attributionsCollapsible: false,
         maxZoom:28,
+        updateWhileAnimating:true,
         url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         
       }),
@@ -49,6 +51,7 @@ const BaseLayer = ({ zIndex }) => {
       visible:false,
       type: "base",
       maxZoom:28,
+      updateWhileAnimating:true,
       title:'OSMHumanitarian'
     });
 
@@ -56,6 +59,9 @@ const BaseLayer = ({ zIndex }) => {
       title: "Topographic Layer",
       type: "base",
       visible: false,
+      maxZoom:28,
+      minZoom:1,
+      updateWhileAnimating:true,
       source: new XYZ({
         url: "https://a.tile.opentopomap.org/{z}/{x}/{y}.png", // Replace tiles.example.com with the actual domain of your extra free layer
       }),
@@ -70,6 +76,18 @@ const BaseLayer = ({ zIndex }) => {
     const layerSwitcher = new LayerSwitcher({reverse: false,groupSelectStyle: 'group'});
     map.addControl(layerSwitcher);
     //tileLayer.setZIndex(zIndex);
+
+    let view = map.getView();
+    // const baseLayer = map.getLayers().item(1);
+    // const baseSource = baseLayer.getSource();
+    // console.log(baseSource,baseLayer)
+
+    // view.on("change:resolution", function(e) {
+    //   if (Number.isInteger(e.target.getZoom())) {
+    //     baseSource.refresh();
+    //     baseLayer.setSource(baseSource);
+    //   }
+    // });
 
     return () => {
       if (map) {

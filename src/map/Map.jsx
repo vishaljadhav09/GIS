@@ -4,6 +4,9 @@ import MapContext from "../state-management/MapContext";
 import * as ol from "ol";
 import DrawInteractions from "./DrawInteractions";
 import { Box } from "@mui/material";
+import VectorLayer from "ol/layer/Vector";
+import { KML } from "ol/format";
+import VectorSource from "ol/source/Vector";
 
 const Map = ({
   children,
@@ -18,7 +21,9 @@ const Map = ({
   useEffect(() => {
     let options = {
       view: new ol.View({ zoom, center,constrainOnlyCenter: true, }),
-      layers: [],
+      layers: [
+
+      ],
       controls: [],
       overlays: [],
     };
@@ -36,7 +41,9 @@ const Map = ({
   useEffect(() => {
     if (!map) return;
     map.getView().setCenter(center);
-  }, [center]);
+  }, [center,zoom]);
+
+
 
   return (
     <MapContext.Provider value={{ map }}>

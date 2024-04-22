@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="root_doc">
+	<gx:CascadingStyle kml:id="__managed_style_2147CA7C6E302A393B43">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_03E02EA396302A393B43">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1356258D91302A393B43</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2147CA7C6E302A393B43</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_21EAA597C2302A373851">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.0.26.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>0.9</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_1356258D91302A393B43">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.66667</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_13424E5A91302A373851">
+		<styleUrl>https://earth.google.com/balloon_components/base/1.0.26.0/card_template.kml#main</styleUrl>
+		<Style>
+			<IconStyle>
+				<scale>0.75</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.66667</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_087EC77673302A373851">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_13424E5A91302A373851</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_21EAA597C2302A373851</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Folder>
+		<name>Revised_Polygon_01.10.2022</name>
+		<Placemark>
+			<name>500 Mtr from Ken River</name>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+				</LineStyle>
+				<PolyStyle>
+					<fill>0</fill>
+				</PolyStyle>
+			</Style>
+			<LineString>
+				<coordinates>
+					80.3178022319548,25.6661313584845,0 80.3226154092459,25.666602671953,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>500 mtr from Ken river</name>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+				</LineStyle>
+				<PolyStyle>
+					<fill>0</fill>
+				</PolyStyle>
+			</Style>
+			<LineString>
+				<coordinates>
+					80.3196978391414,25.6605331116046,0 80.32521518186761,25.6615414968727,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Placemark>
+			<name>GSS Pailani</name>
+			<Point>
+				<coordinates>80.395158266167,25.7053160639888,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="0F7C49485F302A358267">
+			<name>Additional proposed land 55 Acres</name>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+				</LineStyle>
+				<PolyStyle>
+					<fill>0</fill>
+				</PolyStyle>
+			</Style>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							80.3262756603522,25.6674988404841,0 80.32637335135151,25.6681876246341,0 80.3266953342617,25.6690621699605,0 80.3275795408738,25.6704420269149,0 80.3295174961703,25.670236954542,0 80.3310109202362,25.6703089111375,0 80.33188834098419,25.6703831432719,0 80.33183857981641,25.6705721775549,0 80.33143175831989,25.6710521854622,0 80.33102454593801,25.6719207836021,0 80.3284281938804,25.6720963057013,0 80.3270384673563,25.67196164249309,0 80.32602441421371,25.6718948073995,0 80.3246903462211,25.6719719748688,0 80.32380601835951,25.6705696184375,0 80.32338138146579,25.6693915221942,0 80.32316540774769,25.6687361364133,0 80.3262756603522,25.6674988404841,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark id="00C98C4F86302A35AA59">
+			<name>kml 2 Alona Revised Polygon 255 Acres</name>
+			<Style>
+				<LineStyle>
+					<color>ff0000ff</color>
+				</LineStyle>
+				<PolyStyle>
+					<fill>0</fill>
+				</PolyStyle>
+			</Style>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							80.34124885708459,25.6650281711096,0 80.34235460558941,25.6663829307644,0 80.3425685062591,25.6666439328655,0 80.34116377761281,25.667317395572,0 80.3400140092171,25.6677561134311,0 80.3394514754475,25.6670531738898,0 80.33904029084199,25.6665534117057,0 80.3388489175632,25.6661296172075,0 80.3387299312418,25.66693307299821,0 80.3383622709717,25.6671635113206,0 80.33811109166911,25.6672084872631,0 80.3374856796178,25.6674528241233,0 80.3369694398462,25.6675610590369,0 80.33647181579239,25.6679739616795,0 80.3362176049104,25.6682078028657,0 80.3358896685703,25.6685409313221,0 80.3352474408491,25.6684580941599,0 80.33421130981399,25.6689593323838,0 80.3334334978471,25.6693795007512,0 80.3318457282745,25.6703363996389,0 80.3295552293124,25.6702139429611,0 80.32945679064549,25.6667292823104,0 80.3283017376009,25.6677783814728,0 80.32626030112939,25.6674964488055,0 80.3243108649537,25.66825644123089,0 80.31659614145669,25.67500970330255,0 80.3226362299373,25.6665298371805,0 80.31900092843479,25.66310388636667,0 80.32464777730161,25.6624873192405,0 80.3247658322353,25.6623887592944,0 80.32577639862269,25.6631870544759,0 80.3263765809148,25.6633483654671,0 80.32682261490443,25.65872877728373,0 80.32954612009462,25.65867573913538,0 80.33295697358591,25.65950526388018,0 80.3299442658672,25.6627555341397,0 80.330083058585,25.6624610940417,0 80.3309623981977,25.6623468479254,0 80.3308306069994,25.663077720965,0 80.33172299481021,25.6633629669989,0 80.3318795928775,25.6627778706121,0 80.3322942588715,25.6627692064644,0 80.3323033189814,25.6631294769749,0 80.3333718003981,25.6631843825802,0 80.33334906712631,25.6628204703175,0 80.3337700938426,25.662810438502,0 80.3360520360883,25.6630726287064,0 80.33620083975261,25.6628185348681,0 80.3383200043571,25.6631571000288,0 80.3385545796046,25.6630995329676,0 80.3397811567194,25.6638635501767,0 80.3402891873976,25.6642941137375,0 80.3407588102566,25.664868559582,0 80.34124885708459,25.6650281711096,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Folder>
+	<Placemark id="05764A7441302A37082E">
+		<name>new marker added</name>
+		<description><![CDATA[<div>ssdada<br></div>]]></description>
+		<LookAt>
+			<longitude>80.3204532670859</longitude>
+			<latitude>25.66831714727796</latitude>
+			<altitude>128.0042587128245</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>3970.717345779995</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_087EC77673302A373851</styleUrl>
+		<Point>
+			<coordinates>80.33516505110819,25.67125567507739,138.588416302399</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0FE0579E18302A393B42">
+		<name>kml2 added</name>
+		<LookAt>
+			<longitude>80.32673869128561</longitude>
+			<latitude>25.66850198186458</latitude>
+			<altitude>131.1509251101797</altitude>
+			<heading>-29.136389301904</heading>
+			<tilt>51.86259838320593</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>3587.777049157885</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_03E02EA396302A393B43</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						80.32306412758825,25.67238001803006,0 80.32752533889129,25.67335469535096,0 80.32559878444499,25.67615526065945,0 80.3205364723169,25.67528312213906,0 80.32306412758825,25.67238001803006,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>

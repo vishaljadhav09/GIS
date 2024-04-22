@@ -1,7 +1,7 @@
 .ol-map {
   min-height: 300px;
   margin: 0px;
-  height: 100vh;
+  height: 90vh;
 }
 .ol-control {
   position: absolute;
@@ -92,4 +92,11 @@ margin-left: -80px;
   border-width: 10px;
   border-style: solid;
   border-color: cornsilk transparent transparent transparent;
+}
+
+.layer{
+ display: flex;
+ align-items: center;
+ flex-direction: row;
+ align-content: center;
 }

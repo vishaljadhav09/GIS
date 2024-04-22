@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import MapContext from "../state-management/MapContext";
 import OLVectorLayer from "ol/layer/Vector";
 import { Overlay } from "ol";
+import { WKT } from "ol/format";
 
 const VectorLayer = ({ source, style, zIndex }) => {
   const { map } = useContext(MapContext);
@@ -42,6 +43,25 @@ const VectorLayer = ({ source, style, zIndex }) => {
         });
       });
     }
+
+    vectorLayer.once('change', function () {
+      vectorLayer.getSource().forEachFeature(function (feature) {
+          console.log(feature);
+      });
+  });
+
+    vectorLayer.getSource().once('change', function (event) {
+      if (event.target.getState() === 'ready') {
+        const features = vectorLayer.getSource().getFeatures();
+        console.log("kml file features",vectorLayer.getSource().getFeatures());
+        var formatWKT = new WKT();
+        features.forEach(function (feature) {
+          console.log("features",feature.getProperties());
+          var wkt = formatWKT.writeGeometry(feature.getGeometry());
+          console.log("wkt", wkt);
+      });
+      }
+    });
     return () => {
       if (map) {
     //     map.removeLayer(vectorLayer);
