@@ -33,6 +33,7 @@ import BaseLayer from "../../layers/BaseLayer";
 import { Vector } from "ol/source";
 import { KML } from "ol/format";
 import ProjectCard from "../../components/ProjectCard";
+import OverLay from "../../map/OverLay";
 
 const geojsonObject = mapConfig.geojsonObject;
 const geojsonObject2 = mapConfig.geojsonObject2;
@@ -46,6 +47,9 @@ const Home = () => {
   const [drawInteraction, setDrawInteraction] = useState(null);
   const [isDrawEnable, setIsDrawEnable] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isOverlayVisible ,setIsOverlayVisible] = useState(false);
+  const [overlayPosition,setOverlayPosition] =useState([0,0]);
+  const [overlayData ,setOverlayData ] = useState({});
 
   const [showLayer1, setShowLayer1] = useState(false);
   const [showLayer2, setShowLayer2] = useState(true);
@@ -139,9 +143,15 @@ const Home = () => {
   };
 
   const handleProjectCardClick = (feacture) => {
-    console.log(feacture.geometry.coordinates);
-
-    setCenter(fromLonLat(feacture.geometry.coordinates));
+    setIsOverlayVisible(true);
+    let clickedFeactureName = feacture.properties.str1;
+   let clickedFeactureAdditionalInfo = feacture.properties.cat;
+    setOverlayData({
+      str1 : clickedFeactureName || '',
+      cat : clickedFeactureAdditionalInfo || ''
+    })
+    setOverlayPosition(fromLonLat(feacture.geometry.coordinates));
+    setCenter(fromLonLat(feacture.geometry.coordinates))
     setZoom(15);
   };
 
@@ -166,6 +176,10 @@ const Home = () => {
                 })}
                 style={styleFunction}
                 zIndex={1}
+                setIsOverlayVisible={setIsOverlayVisible}
+                setOverlayPosition={setOverlayPosition}
+                setOverlayData={setOverlayData}
+                setCenter={setCenter}
               />
             )}
             {showLayer1 && (
@@ -177,6 +191,9 @@ const Home = () => {
                 })}
                 style={styleFunction}
                 zIndex={10}
+                setCenter={setCenter}
+                setIsOverlayVisible={setIsOverlayVisible}
+
               />
             )}
             {/* //For kmz file */}
@@ -208,6 +225,7 @@ const Home = () => {
             <ZoomControl />
             <LocationControl />
           </Controls>
+          <OverLay position={overlayPosition}  isOverlayVisible={isOverlayVisible} data={overlayData} />
         </Map>
       </Grid>
 

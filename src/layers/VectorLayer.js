@@ -3,8 +3,9 @@ import MapContext from "../state-management/MapContext";
 import OLVectorLayer from "ol/layer/Vector";
 import { Overlay } from "ol";
 import { WKT } from "ol/format";
+import { fromLonLat } from "ol/proj";
 
-const VectorLayer = ({ source, style, zIndex }) => {
+const VectorLayer = ({ source, style, zIndex,setOverlayPosition,setIsOverlayVisible,setOverlayData,setCenter }) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
@@ -20,26 +21,36 @@ const VectorLayer = ({ source, style, zIndex }) => {
       zIndex: 1,
       
     });
-	const overlayelement = document.querySelector('.overlay-container');
-    const overlay = new Overlay({
-      element: overlayelement,
-    });
-    map.addOverlay(overlay);
+
 
     map.addLayer(vectorLayer);
     vectorLayer.setZIndex(zIndex);
 
-
+    
 	const overlayFeactureName = document.getElementById('feacture-name');
 	const overlayFeactureAdditionalInfo = document.getElementById('feacture-Additional-info');
     if (map) {
+
       map.on("click", function (e) {
-		overlay.setPosition(undefined);
+    //     const overlay = map.getOverlays().item(2);
+    // console.log(map.getOverlays(),'in vector')
+
+		 //overlay.setPosition(undefined);
+     setOverlayPosition(undefined);
         map.forEachFeatureAtPixel(e.pixel, function (feacture, layer) {
+          setIsOverlayVisible(true);
+
 			let coordinates = e.coordinate;
           let clickedFeactureName = feacture.get("str1");
           let clickedFeactureAdditionalInfo = feacture.get("cat");
-		  overlay.setPosition(coordinates);
+          //setIsOverlayVisible(true);
+          setOverlayPosition(coordinates);
+          setCenter(coordinates);
+          setOverlayData({
+            str1:clickedFeactureName,
+            cat:clickedFeactureAdditionalInfo
+          })
+        //overlay.setPosition(coordinates);
 		  if(overlayFeactureName && overlayFeactureAdditionalInfo){
 			overlayFeactureName.innerText = clickedFeactureName;
 			overlayFeactureAdditionalInfo.innerHTML = clickedFeactureAdditionalInfo;

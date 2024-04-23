@@ -98,12 +98,7 @@ flyTo(center, function () {});
           <div>{children}</div>
         </div>
       </Box>
-      <div class="overlay-container" >
-        <span class="overlay-text" id="feacture-name"></span>
-        <br />
-        <span class="overlay-text" id="feacture-Additional-info"></span>
-        <br />
-      </div>
+     
     </MapContext.Provider>
   );
 };
