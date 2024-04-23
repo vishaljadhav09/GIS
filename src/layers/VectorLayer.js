@@ -13,6 +13,12 @@ const VectorLayer = ({ source, style, zIndex }) => {
     let vectorLayer = new OLVectorLayer({
       source,
       style,
+      maxZoom: 25, // overlapping with tilelayer2 at viewZoom == 2
+      // fade out at viewZoom == 2
+      opacity: 1,
+      minZoom:0, // initially visible (start layer) and in foreground
+      zIndex: 1,
+      
     });
 	const overlayelement = document.querySelector('.overlay-container');
     const overlay = new Overlay({

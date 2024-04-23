@@ -176,6 +176,7 @@ const Home = () => {
                   }),
                 })}
                 style={styleFunction}
+                zIndex={10}
               />
             )}
             {/* //For kmz file */}

@@ -1,15 +1,14 @@
-import {ol} from "ol";
+import { ol } from "ol";
 import OLTileLayer from "ol/layer/Tile";
 import { useContext, useEffect } from "react";
 import MapContext from "../state-management/MapContext";
 import { OSM, Tile, XYZ } from "ol/source";
 import { Group } from "ol/layer";
-import LayerSwitcher from 'ol-layerswitcher';
+import LayerSwitcher from "ol-layerswitcher";
 //import 'ol/ol.css';
-import 'ol-layerswitcher/dist/ol-layerswitcher.css';
+import "ol-layerswitcher/dist/ol-layerswitcher.css";
 import { osm } from "../Source";
 import * as olSource from "ol/source";
-
 
 const BaseLayer = ({ zIndex }) => {
   const { map } = useContext(MapContext);
@@ -17,13 +16,17 @@ const BaseLayer = ({ zIndex }) => {
   useEffect(() => {
     if (!map) return;
 
-   
     const osmLayer = new OLTileLayer({
       title: "OSM",
       type: "base",
       visible: true,
-      maxZoom:28,
-      updateWhileAnimating:true,
+      maxZoom: 32, // overlapping with tilelayer2 at viewZoom == 2
+      // fade out at viewZoom == 2
+      opacity: 1,
+      minZoom:0, // initially visible (start layer) and in foreground
+      zIndex: 0,
+      preload: Infinity,
+      updateWhileAnimating: false,
       source: new OSM(),
     });
 
@@ -37,31 +40,30 @@ const BaseLayer = ({ zIndex }) => {
           "Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community",
         ],
         attributionsCollapsible: false,
-        maxZoom:28,
-        updateWhileAnimating:true,
+        maxZoom: 28,
+        updateWhileAnimating: true,
         url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        
       }),
     });
 
     const OpenstreetHimanitarianMap = new OLTileLayer({
-      source : new olSource.OSM({
-        url : "https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+      source: new olSource.OSM({
+        url: "https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
       }),
-      visible:false,
+      visible: false,
       type: "base",
-      maxZoom:28,
-      updateWhileAnimating:true,
-      title:'OSMHumanitarian'
+      maxZoom: 28,
+      updateWhileAnimating: true,
+      title: "OSMHumanitarian",
     });
 
     const topographicLayer = new OLTileLayer({
       title: "Topographic Layer",
       type: "base",
       visible: false,
-      maxZoom:28,
-      minZoom:1,
-      updateWhileAnimating:true,
+      maxZoom: 28,
+      minZoom: 1,
+      updateWhileAnimating: true,
       source: new XYZ({
         url: "https://a.tile.opentopomap.org/{z}/{x}/{y}.png", // Replace tiles.example.com with the actual domain of your extra free layer
       }),
@@ -69,11 +71,19 @@ const BaseLayer = ({ zIndex }) => {
 
     var base_maps = new Group({
       title: "Base maps",
-      layers: [ esriSatellite,osmLayer,OpenstreetHimanitarianMap,topographicLayer],
+      layers: [
+        esriSatellite,
+        osmLayer,
+        OpenstreetHimanitarianMap,
+        topographicLayer,
+      ],
     });
 
     map.addLayer(base_maps);
-    const layerSwitcher = new LayerSwitcher({reverse: false,groupSelectStyle: 'group'});
+    const layerSwitcher = new LayerSwitcher({
+      reverse: false,
+      groupSelectStyle: "group",
+    });
     map.addControl(layerSwitcher);
     //tileLayer.setZIndex(zIndex);
 
@@ -94,7 +104,7 @@ const BaseLayer = ({ zIndex }) => {
         map.removeControl(layerSwitcher);
       }
     };
-  }, [zIndex,map]);
+  }, [zIndex, map]);
 
   return null;
 };
