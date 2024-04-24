@@ -46,54 +46,97 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-
+import EngineeringIcon from "@mui/icons-material/Engineering";
 const projectDrawerWidth = 240;
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: 0,
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${projectDrawerWidth}px`,
+const Main = styled("main", {
+  shouldForwardProp: (prop) =>
+    prop !== "openLeftDrawer" && prop !== "openRightDrawer",
+})(({ theme, openLeftDrawer, openRightDrawer }) => ({
+  flexGrow: 1,
+  padding: 0,
+  transition: theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  marginLeft: openLeftDrawer
+    ? 0
+    : openRightDrawer
+    ? `-${projectDrawerWidth}px`
+    : `-${projectDrawerWidth + 250}px`,
+  marginRight: openRightDrawer
+    ? 0
+    : openLeftDrawer
+    ? `-${projectDrawerWidth}px`
+    : `-${projectDrawerWidth - 230}px`,
 
-    ...(open && {
-      padding: theme.spacing(0),
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-      margin: 0,
+  ...(openLeftDrawer && {
+    marginLeft: `-${projectDrawerWidth}px`,
+    marginRight: `${projectDrawerWidth - 240}px`,
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-  })
-);
+  }),
+
+  ...(openRightDrawer && {
+    marginRight: `${projectDrawerWidth}px`,
+    marginLeft: `-${projectDrawerWidth + 250}px`,
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+
+  ...(openLeftDrawer &&
+    openRightDrawer && {
+      marginLeft: `-${projectDrawerWidth}px`, // Increase margin for both drawers
+      marginRight: projectDrawerWidth, // Increase margin for both drawers
+    }),
+}));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== "openLeftDrawer" && prop !== "openRightDrawer",
+})(({ theme, openLeftDrawer, openRightDrawer }) => ({
   padding: 0,
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  ...(open && {
-    width: `calc(100% - ${projectDrawerWidth}px)`,
-    padding: 0,
-    marginLeft: `${projectDrawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+  marginLeft: openLeftDrawer
+    ? `-${projectDrawerWidth + 220}px`
+    : openRightDrawer
+    ? `-${projectDrawerWidth - 200}px`
+    : 0, // Adjust margin when left or right drawer is open
+  width:
+    openLeftDrawer && openRightDrawer
+      ? `calc(100% - ${projectDrawerWidth * 2}px)`
+      : openLeftDrawer || openRightDrawer
+      ? `calc(100% - 0px)`
+      : "100%", // Adjust width when any drawer is open
+
+  ...(openLeftDrawer &&
+    !openRightDrawer && {
+      transition: theme.transitions.create(["margin", "width"], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     }),
-  }),
+  ...(openRightDrawer &&
+    !openLeftDrawer && {
+      transition: theme.transitions.create(["margin", "width"], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "start",
-  padding: theme.spacing(0, 0),
+  padding: 0,
+  margin: 0,
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
@@ -109,8 +152,8 @@ const Home = () => {
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const [overlayPosition, setOverlayPosition] = useState([0, 0]);
   const [overlayData, setOverlayData] = useState({});
-  const [openprojectDrawer, setOpen] = useState(false);
-
+  const [openLeftDrawer, setOpen] = useState(false);
+  const [openRightDrawer, setOpenRightDrawer] = useState(false);
   const [showLayer1, setShowLayer1] = useState(false);
   const [showLayer2, setShowLayer2] = useState(true);
   const [showMarker, setShowMarker] = useState(true);
@@ -206,10 +249,6 @@ const Home = () => {
     }
   };
 
-  const handleDrawerClick = () => {
-    setOpenDrawer(true);
-  };
-
   const handleProjectCardClick = (feacture) => {
     setIsOverlayVisible(true);
     let clickedFeactureName = feacture.properties.str1;
@@ -232,22 +271,46 @@ const Home = () => {
               backgroundColor: "white",
               color: "black",
               boxShadow: 0,
-              height: "5vh",
+              padding: 0,
             }}
             position="fixed"
-            open={openprojectDrawer}
+            openLeftDrawer={openLeftDrawer}
+            openRightDrawer={openRightDrawer}
           >
-            <Toolbar>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignContent: "space-between",
+              }}
+            >
+              <Box>
+                {!openLeftDrawer && (
+                  <IconButton
+                    color="inherit"
+                    onClick={handleDrawerOpen}
+                    edge="center"
+                    size="large"
+                    //sx={{ ml: 0, ...(openLeftDrawer && { display: "none" }) }}
+                    // sx={{ m:0.3}}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                )}
+              </Box>
+
               <IconButton
                 color="inherit"
-                onClick={handleDrawerOpen}
-                edge="start"
-                size="small"
-                sx={{ mr: 2, ...(openprojectDrawer && { display: "none" }) }}
+                onClick={() => setOpenRightDrawer(!openRightDrawer)}
+                edge="center"
+                size="large"
+                // sx={{ m:0.3}}
+                sx={{ ml: 0, ...(openRightDrawer && { display: "none" }) }}
               >
-                <MenuIcon />
+                <EngineeringIcon />
               </IconButton>
-            </Toolbar>
+            </Box>
           </AppBar>
           <Drawer
             padding={0}
@@ -261,17 +324,14 @@ const Home = () => {
             }}
             variant="persistent"
             anchor="left"
-            open={openprojectDrawer}
+            open={openLeftDrawer}
           >
-            <DrawerHeader >
-              <IconButton onClick={handleDrawerClose}>
-                {theme.direction === "ltr" ? (
+               <Box sx={{width:'100%',display:'flex',flexDirection:'row',justifyContent:'end'}}>
+            <IconButton onClick={() => setOpen(false)}>
                   <ChevronLeftIcon />
-                ) : (
-                  <ChevronRightIcon />
-                )}
               </IconButton>
-            </DrawerHeader>
+            </Box>
+         
             <Divider />
             <Box sx={{ maxHeight: 500, overflow: "auto" }}>
               {sampleFeatures.features.map((feacture, index) => {
@@ -290,13 +350,37 @@ const Home = () => {
               })}
             </Box>
 
- 
             <Divider />
           </Drawer>
-          <Main open={openprojectDrawer}>
-            <Box sx={{height:40}}>
-
+          <Drawer
+            padding={0}
+            sx={{
+              width: projectDrawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: projectDrawerWidth,
+                boxSizing: "border-box",
+              },
+            }}
+            variant="persistent"
+            anchor="right"
+            open={openRightDrawer}
+          >
+            <Box>
+            <IconButton onClick={() => setOpenRightDrawer(false)}>
+                  <ChevronRightIcon />
+              </IconButton>
             </Box>
+        
+            <Divider />
+
+            <Divider />
+          </Drawer>
+          <Main
+            openLeftDrawer={openLeftDrawer}
+            openRightDrawer={openRightDrawer}
+          >
+            <Box sx={{ height: 33 }}></Box>
             {/* <DrawerHeader /> */}
             <Map
               center={center}
@@ -447,7 +531,6 @@ const Home = () => {
           }}
         ></Box>
       </Grid> */}
-      
     </Grid>
   );
 };
