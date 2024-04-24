@@ -25,6 +25,11 @@ import {
   Drawer,
   Grid,
   IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -34,22 +39,77 @@ import { Vector } from "ol/source";
 import { KML } from "ol/format";
 import ProjectCard from "../../components/ProjectCard";
 import OverLay from "../../map/OverLay";
+import { styled, useTheme } from "@mui/material/styles";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
 
-const geojsonObject = mapConfig.geojsonObject;
-const geojsonObject2 = mapConfig.geojsonObject2;
-const markersLonLat = [mapConfig.kansasCityLonLat, mapConfig.blueSpringsLonLat];
+const projectDrawerWidth = 240;
+
+const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: 0,
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${projectDrawerWidth}px`,
+
+    ...(open && {
+      padding: theme.spacing(0),
+      transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+      margin: 0,
+    }),
+  })
+);
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  padding: 0,
+  transition: theme.transitions.create(["margin", "width"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${projectDrawerWidth}px)`,
+    padding: 0,
+    marginLeft: `${projectDrawerWidth}px`,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "start",
+  padding: theme.spacing(0, 0),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-end",
+}));
 
 const Home = () => {
-  
   const [center, setCenter] = useState(fromLonLat([0, 0]));
   const [zoom, setZoom] = useState(1);
   const [drawType, setDrawType] = useState("Point");
   const [drawInteraction, setDrawInteraction] = useState(null);
   const [isDrawEnable, setIsDrawEnable] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [isOverlayVisible ,setIsOverlayVisible] = useState(false);
-  const [overlayPosition,setOverlayPosition] =useState([0,0]);
-  const [overlayData ,setOverlayData ] = useState({});
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [overlayPosition, setOverlayPosition] = useState([0, 0]);
+  const [overlayData, setOverlayData] = useState({});
+  const [openprojectDrawer, setOpen] = useState(false);
 
   const [showLayer1, setShowLayer1] = useState(false);
   const [showLayer2, setShowLayer2] = useState(true);
@@ -65,6 +125,7 @@ const Home = () => {
   });
   const [mapSource, setMapSourse] = useState(osm());
   const [drawnFeatureCoordinates, setDrawnFeatureCoordinates] = useState([]);
+  const theme = useTheme();
 
   function addMarkers(lonLatArray) {
     var iconStyle = new Style({
@@ -115,7 +176,6 @@ const Home = () => {
     fetchData();
   }, []);
 
-
   const handleDrawEnd = (drawnFeature) => {
     // Update the state with the coordinates of the drawn feature
 
@@ -127,6 +187,14 @@ const Home = () => {
   };
   const handleChangeDrawType = (event) => {
     setDrawType(event.target.value);
+  };
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
   const handleSubmitAction = async () => {
@@ -145,59 +213,130 @@ const Home = () => {
   const handleProjectCardClick = (feacture) => {
     setIsOverlayVisible(true);
     let clickedFeactureName = feacture.properties.str1;
-   let clickedFeactureAdditionalInfo = feacture.properties.cat;
+    let clickedFeactureAdditionalInfo = feacture.properties.cat;
     setOverlayData({
-      str1 : clickedFeactureName || '',
-      cat : clickedFeactureAdditionalInfo || ''
-    })
+      str1: clickedFeactureName || "",
+      cat: clickedFeactureAdditionalInfo || "",
+    });
     setOverlayPosition(fromLonLat(feacture.geometry.coordinates));
-    setCenter(fromLonLat(feacture.geometry.coordinates))
+    setCenter(fromLonLat(feacture.geometry.coordinates));
     setZoom(15);
   };
 
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
-      <Grid item xs={9}>
-        <Map
-          center={center}
-          zoom={zoom}
-          drawnFeatureCoordinates={drawnFeatureCoordinates}
-          setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
-        >
-          <Layers>
-            <BaseLayer zIndex={10} />
+      <Grid item xs={12}>
+        <Box sx={{ display: "flex", padding: 0 }}>
+          <AppBar
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              boxShadow: 0,
+              height: "5vh",
+            }}
+            position="fixed"
+            open={openprojectDrawer}
+          >
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                onClick={handleDrawerOpen}
+                edge="start"
+                size="small"
+                sx={{ mr: 2, ...(openprojectDrawer && { display: "none" }) }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            padding={0}
+            sx={{
+              width: projectDrawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: projectDrawerWidth,
+                boxSizing: "border-box",
+              },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={openprojectDrawer}
+          >
+            <DrawerHeader >
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "ltr" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+            <Box sx={{ maxHeight: 500, overflow: "auto" }}>
+              {sampleFeatures.features.map((feacture, index) => {
+                return (
+                  <Box
+                    key={index}
+                    sx={{ py: 1 }}
+                    onClick={() => handleProjectCardClick(feacture)}
+                  >
+                    <ProjectCard
+                      header={feacture.properties.str1}
+                      body={feacture.properties.cat}
+                    />
+                  </Box>
+                );
+              })}
+            </Box>
 
-            {showLayer2 && (
-              <VectorLayer
-                source={vector({
-                  features: new GeoJSON().readFeatures(sampleFeatures, {
-                    featureProjection: get("EPSG:3857"),
-                  }),
-                })}
-                style={styleFunction}
-                zIndex={1}
-                setIsOverlayVisible={setIsOverlayVisible}
-                setOverlayPosition={setOverlayPosition}
-                setOverlayData={setOverlayData}
-                setCenter={setCenter}
-              />
-            )}
-            {showLayer1 && (
-              <VectorLayer
-                source={vector({
-                  features: new GeoJSON().readFeatures(features, {
-                    featureProjection: get("EPSG:3857"),
-                  }),
-                })}
-                style={styleFunction}
-                zIndex={10}
-                setCenter={setCenter}
-                setIsOverlayVisible={setIsOverlayVisible}
+ 
+            <Divider />
+          </Drawer>
+          <Main open={openprojectDrawer}>
+            <Box sx={{height:40}}>
 
-              />
-            )}
-            {/* //For kmz file */}
-            {/* <VectorLayer
+            </Box>
+            {/* <DrawerHeader /> */}
+            <Map
+              center={center}
+              zoom={zoom}
+              drawnFeatureCoordinates={drawnFeatureCoordinates}
+              setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
+            >
+              <Layers>
+                <BaseLayer zIndex={10} />
+
+                {showLayer2 && (
+                  <VectorLayer
+                    source={vector({
+                      features: new GeoJSON().readFeatures(sampleFeatures, {
+                        featureProjection: get("EPSG:3857"),
+                      }),
+                    })}
+                    style={styleFunction}
+                    zIndex={1}
+                    setIsOverlayVisible={setIsOverlayVisible}
+                    setOverlayPosition={setOverlayPosition}
+                    setOverlayData={setOverlayData}
+                    setCenter={setCenter}
+                  />
+                )}
+                {showLayer1 && (
+                  <VectorLayer
+                    source={vector({
+                      features: new GeoJSON().readFeatures(features, {
+                        featureProjection: get("EPSG:3857"),
+                      }),
+                    })}
+                    style={styleFunction}
+                    zIndex={10}
+                    setCenter={setCenter}
+                    setIsOverlayVisible={setIsOverlayVisible}
+                  />
+                )}
+                {/* //For kmz file */}
+                {/* <VectorLayer
               source={
                 new Vector({
                   url: "https://openlayers.org/en/latest/examples/data/kml/2012-02-10.kml",
@@ -206,7 +345,7 @@ const Home = () => {
               }
               style={styleFunction}
             /> */}
-            {/* <DrawInteractions
+                {/* <DrawInteractions
               onDrawEnd={handleDrawEnd}
               source={vector({
                 features: new GeoJSON().readFeatures(sampleFeatures, {
@@ -218,18 +357,24 @@ const Home = () => {
               drawnFeatureCoordinates={drawnFeatureCoordinates}
               setDrawnFeatureCoordinates={setDrawnFeatureCoordinates}
             /> */}
-            {/* {showMarker && <VectorLayer source={vector({ features })} />} */}
-          </Layers>
-          <Controls>
-            <FullScreenControl />
-            <ZoomControl />
-            <LocationControl />
-          </Controls>
-          <OverLay position={overlayPosition}  isOverlayVisible={isOverlayVisible} data={overlayData} />
-        </Map>
+                {/* {showMarker && <VectorLayer source={vector({ features })} />} */}
+              </Layers>
+              <Controls>
+                <FullScreenControl />
+                <ZoomControl />
+                <LocationControl />
+              </Controls>
+              <OverLay
+                position={overlayPosition}
+                isOverlayVisible={isOverlayVisible}
+                data={overlayData}
+              />
+            </Map>
+          </Main>
+        </Box>
       </Grid>
 
-      <Grid item xs={3} p={0} sx={{ backgroundColor: "white" }}>
+      {/* <Grid item xs={3} p={0} sx={{ backgroundColor: "white" }}>
         <Box sx={{ paddingLeft: 0 }}>
           <Box sx={{ display: "flex", justifyContent: "start" }}>
             <IconButton
@@ -277,7 +422,6 @@ const Home = () => {
               </select>
             </label>
           </Box>
-          {/* <button onClick={handleSubmitAction}>Submit</button> */}
           <ButtonGroup sx={{ m: 0 }}>
             <Button
               className="drawer-menu-bt1"
@@ -301,23 +445,9 @@ const Home = () => {
             maxHeight: 400,
             overflow: "auto",
           }}
-        >
-          {sampleFeatures.features.map((feacture, index) => {
-            return (
-              <Box
-                key={index}
-                sx={{ py: 1 }}
-                onClick={() => handleProjectCardClick(feacture)}
-              >
-                <ProjectCard
-                  header={feacture.properties.str1}
-                  body={feacture.properties.cat}
-                />
-              </Box>
-            );
-          })}
-        </Box>
-      </Grid>
+        ></Box>
+      </Grid> */}
+      
     </Grid>
   );
 };
