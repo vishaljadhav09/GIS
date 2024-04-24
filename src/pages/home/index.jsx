@@ -63,16 +63,16 @@ const Main = styled("main", {
     ? 0
     : openRightDrawer
     ? `-${projectDrawerWidth}px`
-    : `-${projectDrawerWidth + 250}px`,
+    : `-${projectDrawerWidth * 2}px`,
   marginRight: openRightDrawer
     ? 0
     : openLeftDrawer
     ? `-${projectDrawerWidth}px`
-    : `-${projectDrawerWidth - 230}px`,
+    : `-10px`,
 
   ...(openLeftDrawer && {
     marginLeft: `-${projectDrawerWidth}px`,
-    marginRight: `${projectDrawerWidth - 240}px`,
+    marginRight: `0px`,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -81,7 +81,7 @@ const Main = styled("main", {
 
   ...(openRightDrawer && {
     marginRight: `${projectDrawerWidth}px`,
-    marginLeft: `-${projectDrawerWidth + 250}px`,
+    marginLeft: `-${projectDrawerWidth *2}px`,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -105,9 +105,9 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginLeft: openLeftDrawer
-    ? `-${projectDrawerWidth + 220}px`
+    ? `-20px`
     : openRightDrawer
-    ? `-${projectDrawerWidth - 200}px`
+    ? `-40px`
     : 0, // Adjust margin when left or right drawer is open
   width:
     openLeftDrawer && openRightDrawer
