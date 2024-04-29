@@ -1,3 +1,16 @@
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import EngineeringIcon from "@mui/icons-material/Engineering";
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Box,
+  Divider,
+  Drawer,
+  Grid,
+  IconButton
+} from "@mui/material";
+import MuiAppBar from "@mui/material/AppBar";
+import { styled, useTheme } from "@mui/material/styles";
 import Feature from "ol/Feature";
 import GeoJSON from "ol/format/GeoJSON";
 import Point from "ol/geom/Point";
@@ -6,48 +19,20 @@ import { Icon, Style } from "ol/style";
 import React, { useEffect, useState } from "react";
 import "../../App.css";
 import { osm, vector } from "../../Source";
+import ProjectCard from "../../components/ProjectCard";
 import mapConfig from "../../config.json";
 import { Controls, FullScreenControl, ZoomControl } from "../../controls";
 import LocationControl from "../../controls/LocationControl";
-import { Layers, TileLayer, VectorLayer } from "../../layers";
+import { Layers, VectorLayer } from "../../layers";
+import BaseLayer from "../../layers/BaseLayer";
 import Map from "../../map";
-import DrawInteractions from "../../map/DrawInteractions";
+import OverLay from "../../map/OverLay";
 import {
   fetchHomeGeoData,
   submitGeoData,
 } from "../../service/home/HomeService";
 import { styleFunction } from "../../utils/functions/StyleFunction";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Divider,
-  Drawer,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
-import BaseLayer from "../../layers/BaseLayer";
-import { Vector } from "ol/source";
-import { KML } from "ol/format";
-import ProjectCard from "../../components/ProjectCard";
-import OverLay from "../../map/OverLay";
-import { styled, useTheme } from "@mui/material/styles";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import EngineeringIcon from "@mui/icons-material/Engineering";
-const projectDrawerWidth = 240;
+const projectDrawerWidth = 270;
 
 const Main = styled("main", {
   shouldForwardProp: (prop) =>
@@ -338,7 +323,7 @@ const Home = () => {
                 return (
                   <Box
                     key={index}
-                    sx={{ py: 1 }}
+                    sx={{ my:2 }}
                     onClick={() => handleProjectCardClick(feacture)}
                   >
                     <ProjectCard
